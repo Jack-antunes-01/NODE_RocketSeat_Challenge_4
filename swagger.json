@@ -1,0 +1,321 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Rental X",
+    "description": "This is Rental X Api",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Jack",
+                  "email": "jackson.contato24@hotmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "admin": {
+                      "type": "boolean",
+                      "enum": [false]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "a5f2e822-c4ea-4ff1-a6f0-24364e2d441e",
+                    "admin": false,
+                    "name": "jackson",
+                    "email": "jackson.ctes@testge.com",
+                    "created_at": "2022-02-03T20:01:27.594Z",
+                    "updated_at": "2022-02-03T20:01:37.883Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "Email already exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "List all users",
+        "description": "Only ADMIN users can access.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "schema": {
+              "type": "string($uuid)"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "id": "a5f2e822-c4ea-4ff1-a6f0-24364e2d441e",
+                      "admin": true,
+                      "name": "jackson",
+                      "email": "jackson.ctes@testge.com",
+                      "created_at": "2022-02-03T20:01:27.594Z",
+                      "updated_at": "2022-02-03T20:01:37.883Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User does't exists or don't have privileges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User does't exists or don't have privileges"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/${userId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "List specific user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string($uuid)"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "a5f2e822-c4ea-4ff1-a6f0-24364e2d441e",
+                    "admin": true,
+                    "name": "jackson",
+                    "email": "jackson.ctes@testge.com",
+                    "created_at": "2022-02-03T20:01:27.594Z",
+                    "updated_at": "2022-02-03T20:01:37.883Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User doesn't exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/${userId}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Turn user as admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "schema": {
+              "type": "string($uuid)"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": "a5f2e822-c4ea-4ff1-a6f0-24364e2d441e",
+                    "admin": true,
+                    "name": "jackson",
+                    "email": "jackson.ctes@testge.com",
+                    "created_at": "2022-02-03T20:01:27.594Z",
+                    "updated_at": "2022-02-03T20:01:37.883Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "error": "User doesn't exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
